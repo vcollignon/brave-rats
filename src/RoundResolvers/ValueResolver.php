@@ -22,7 +22,7 @@ class ValueResolver
         $player1Bonus = 0;
         $player2Bonus = 0;
 
-        $penultiemRound = $roundHistory->getPenultiemRound();
+        $penultiemRound = $roundHistory->getPenultiemRound($round);
 
         if($penultiemRound instanceof Round)
         {
