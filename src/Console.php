@@ -22,7 +22,7 @@ class Console
         $this->app = new \Onyx\Console\Application($container);
 
         $this->app->add(new RouteLister(new Silex($container)));
-        $this->app->add(new Console\HelloWorld());
+        $this->app->add(new Console\BraveRats());
     }
 
     public function run(): void
