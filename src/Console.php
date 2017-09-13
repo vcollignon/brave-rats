@@ -22,7 +22,8 @@ class Console
         $this->app = new \Onyx\Console\Application($container);
 
         $this->app->add(new RouteLister(new Silex($container)));
-        $this->app->add(new Console\BraveRats());
+        
+        $this->app->add(new Console\BraveRats($container['game']));
     }
 
     public function run(): void

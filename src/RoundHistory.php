@@ -20,4 +20,14 @@ class RoundHistory implements \IteratorAggregate
     {
         return new \ArrayIterator($this->rounds);
     }
+
+    public function getPenultiemRound()
+    {
+        if(count($this->rounds) > 1)
+        {
+            return $this->rounds[count($this->rounds) - 2];
+        }
+
+        return null;
+    }
 }

@@ -13,14 +13,14 @@ class Game
         $roundHistory,
         $gameResolver;
 
-    public function __construct()
+    public function __construct(GameResolver $gameResolver)
     {
         $this->player1 = new Player('Yargs');
         $this->player2 = new Player('Applewoods');
 
         $this->currentPlayer = $this->player1;
         $this->roundHistory = new RoundHistory();
-        $this->gameResolver = new GameResolver();
+        $this->gameResolver = $gameResolver;
     }
 
     public function getCurrentPlayer(): Player

@@ -4,27 +4,34 @@ declare(strict_types = 1);
 
 namespace BraveRats;
 
+use BraveRats\RoundResolvers\CapacityResolver;
+use BraveRats\RoundResolvers\ValueResolver;
+use BraveRats\RoundResults\NoResult;
 use BraveRats\RoundResults\Player1Win;
 use BraveRats\RoundResults\Player2Win;
 use BraveRats\RoundResults\RoundOnHold;
 
 class RoundResolver
 {
-    public function resolve(Round $round): RoundResult
+    private
+        $valueResolver,
+        $capacityResolver;
+
+    public function __construct(ValueResolver $valueResolver, CapacityResolver $capacityResolver)
     {
-        $player1Card = $round->getPlayer1Card();
-        $player2Card = $round->getPlayer2Card();
+        $this->valueResolver = $valueResolver;
+        $this->capacityResolver = $capacityResolver;
+    }
 
-        if($player1Card->getValue() > $player2Card->getValue())
+    public function resolve(Round $round, RoundHistory $roundHistory): RoundResult
+    {
+        $capacityResolverResult = $this->capacityResolver->resolve($round, $roundHistory);
+
+        if($capacityResolverResult instanceof NoResult)
         {
-            return new Player1Win();
+            return $this->valueResolver->resolve($round, $roundHistory);
         }
 
-        if($player2Card->getValue() > $player1Card->getValue())
-        {
-            return new Player2Win();
-        }
-
-        return new RoundOnHold();
+        return $capacityResolverResult;
     }
 }

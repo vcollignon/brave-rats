@@ -25,4 +25,14 @@ class Round
     {
         return $this->player2Card;
     }
+
+    public function isPlayer1General(): bool
+    {
+        return $this->player1Card->isGeneral();
+    }
+
+    public function isPlayer2General(): bool
+    {
+        return $this->player2Card->isGeneral();
+    }
 }

@@ -97,4 +97,24 @@ final class Card
     {
         return $this->label;
     }
+
+    public function isMusicien()
+    {
+        return $this->label === self::MUSICIEN;
+    }
+
+    public function isMagicien()
+    {
+        return $this->label === self::MAGICIEN;
+    }
+
+    public function isEmbassadeur()
+    {
+        return $this->label === self::EMBASSADEUR;
+    }
+
+    public function isGeneral()
+    {
+        return $this->label === self::GENERAL;
+    }
 }

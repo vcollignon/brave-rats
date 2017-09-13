@@ -2,8 +2,11 @@
 
 namespace BraveRats;
 
-use Silex\Provider\SessionServiceProvider;
+use BraveRats\RoundResolver;
+use BraveRats\RoundResolvers\CapacityResolver;
+use BraveRats\RoundResolvers\ValueResolver;
 use Onyx\Providers;
+use Silex\Provider\SessionServiceProvider;
 
 class Application extends \Onyx\Application
 {
@@ -22,6 +25,18 @@ class Application extends \Onyx\Application
 
     protected function initializeServices(): void
     {
+        $this['game'] = function($c) {
+            return new Game($c['gameResolver']);
+        };
+
+        $this['gameResolver'] = function($c) {
+            return new GameResolver($c['roundResolver']);
+        };
+
+        $this['roundResolver'] = function($c) {
+            return new RoundResolver(new ValueResolver(), new CapacityResolver());
+        };
+
         $this->configureTwig();
     }
 

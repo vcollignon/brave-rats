@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace BraveRats\Console;
 
 use BraveRats\Card;
+use BraveRats\Exceptions\Player1WinGameException;
+use BraveRats\Exceptions\Player2WinGameException;
 use BraveRats\Game;
 use BraveRats\Player;
 use Symfony\Component\Console\Command\Command;
@@ -17,11 +19,11 @@ class BraveRats extends Command
     private
         $game;
 
-    public function __construct()
+    public function __construct(Game $game)
     {
         parent::__construct();
 
-        $this->game = new Game();
+        $this->game = $game;
     }
 
     protected function configure()
@@ -40,7 +42,23 @@ class BraveRats extends Command
             $player2 = $this->game->getPlayer2();
             $chosenCardPlayer2 = $this->askCurrentPlayerCard($player2, $input, $output);
 
-            $gameResult = $this->game->playRound($chosenCardPlayer1, $chosenCardPlayer2);
+            try
+            {
+                $gameResult = $this->game->playRound($chosenCardPlayer1, $chosenCardPlayer2);
+            }
+            catch(Player1WinGameException $e)
+            {
+                $output->writeln('Player 1 win !');
+                break;
+            }
+            catch(Player2WinGameException $e)
+            {
+                $output->writeln('Player 2 win !');
+                break;
+            }
+
+            $output->writeln(sprintf('Result round #%s', $gameResult->roundNumber));
+            $output->writeln(sprintf('Yargs : %s | Applewoods : %s', $gameResult->player1WonRounds, $gameResult->player2WonRounds));
 
             if($gameResult->isGameEnded())
             {
