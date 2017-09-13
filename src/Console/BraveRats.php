@@ -40,7 +40,21 @@ class BraveRats extends Command
             $player2 = $this->game->getPlayer2();
             $chosenCardPlayer2 = $this->askCurrentPlayerCard($player2, $input, $output);
 
-            $this->game->playRound($chosenCardPlayer1, $chosenCardPlayer2);
+            $gameResult = $this->game->playRound($chosenCardPlayer1, $chosenCardPlayer2);
+
+            if($gameResult->isGameEnded())
+            {
+                $output->writeln('Game ended');
+                $winingPlayer = $gameResult->getWiningPlayer();
+                if($winingPlayer === null)
+                {
+                    $output->writeln('Draw !');
+                    break;
+                }
+
+                $output->writeln($gameResult->getWiningPlayer() . ' win !');
+                break;
+            }
         }
     }
 

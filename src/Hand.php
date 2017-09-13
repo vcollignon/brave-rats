@@ -43,5 +43,7 @@ class Hand
         }
 
         unset($this->cards[$card->getLabel()]);
+
+        
     }
 }
